@@ -14,15 +14,12 @@ import '../message.dart';
 
 class NotificationServices {
 
-  //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance ;
 
-  //initialising firebase message plugin
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin  = FlutterLocalNotificationsPlugin();
 
 
 
-  //function to initialise flutter local notification plugin to show notifications for android when app is active
   void initLocalNotifications(BuildContext context, RemoteMessage message)async{
     var androidInitializationSettings = const AndroidInitializationSettings('@mipmap/ic_launcher');
     var iosInitializationSettings = const DarwinInitializationSettings();
@@ -82,23 +79,16 @@ class NotificationServices {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      if (kDebugMode) {
-        print('user granted permission');
-      }
+     print("Authorized);
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      if (kDebugMode) {
-        print('user granted provisional permission');
-      }
+     
     } else {
-      //appsetting.AppSettings.openNotificationSettings();
-      if (kDebugMode) {
-        print('user denied permission');
-      }
+     
     }
   }
 
-  // function to show visible notification when app is active
+
   Future<void> showNotification(RemoteMessage message)async{
 
     AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -145,8 +135,7 @@ class NotificationServices {
 
   }
 
-  //function to get device token on which we will send the notifications
-  Future<String> getDeviceToken() async {
+   Future<String> getDeviceToken() async {
     String? token = await messaging.getToken();
     return token!;
   }
@@ -160,19 +149,16 @@ class NotificationServices {
     });
   }
 
-  //handle tap on notification when app is in background or terminated
-  Future<void> setupInteractMessage(BuildContext context)async{
+   Future<void> setupInteractMessage(BuildContext context)async{
 
-    // when app is terminated
-    RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+       RemoteMessage? initialMessage = await FirebaseMessaging.instance.getInitialMessage();
 
     if(initialMessage != null){
       handleMessage(context, initialMessage);
     }
 
 
-    //when app ins background
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      FirebaseMessaging.onMessageOpenedApp.listen((event) {
       handleMessage(context, event);
     });
 
